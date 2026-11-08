@@ -9,6 +9,7 @@ dist
 out
 release
 tests
+!tests/
 yarn.lock
 yarn-error.log
 .env

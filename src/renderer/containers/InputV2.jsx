@@ -369,12 +369,9 @@ const InputV2 = ({
                             const text = event.clipboardData?.getData('text/plain') ?? '';
                             if (!text) return true;
 
-                            const { from, to } = view.state.selection.main;
-                            // updateListener fires synchronously here, dispatching setInputParsing.
-                            view.dispatch({
-                                changes:   { from, to, insert: text },
-                                selection: { anchor: from + text.length },
-                            });
+                            // CodeMirror normalizes CRLF to a single document line break.
+                            // Its replacement API also calculates the correct cursor position.
+                            view.dispatch(view.state.replaceSelection(text));
 
                             sourceMetaRef.current = { name: 'Clipboard', sourceType: 'clipboard' };
                             // Use the full doc content (post-dispatch) so the worker sees
@@ -508,13 +505,14 @@ const InputV2 = ({
 
             const view = editorViewRef.current;
             if (!view || !text) return;
+            const insertedText = view.state.toText(text);
             // updateListener fires synchronously here, dispatching setInputParsing.
             view.dispatch({
-                changes:   { from: 0, to: view.state.doc.length, insert: text ?? '' },
-                selection: { anchor: (text ?? '').length },
+                changes:   { from: 0, to: view.state.doc.length, insert: insertedText },
+                selection: { anchor: insertedText.length },
             });
             sourceMetaRef.current = { name: 'Clipboard', sourceType: 'clipboard' };
-            triggerParseNowRef.current?.(text ?? '');
+            triggerParseNowRef.current?.(view.state.doc.toString());
         } catch (err) {
             showError(err.message);
         }
