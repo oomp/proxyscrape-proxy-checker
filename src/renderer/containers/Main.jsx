@@ -13,12 +13,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Settings from '../components/Settings';
-import BrowserIntegration from './BrowserIntegration';
 import SideDrawer from '../components/ui/SideDrawer';
 import { connect } from 'react-redux';
 import Checking from './Checking';
 import Overlay from './Overlay';
-import Update from './Update';
 import ErrorToast from '../components/ErrorToast';
 import Footer from '../components/Footer';
 import Info from '../components/Info';
@@ -315,7 +313,6 @@ class Main extends React.PureComponent {
                     <Result />
                     <Checking />
                     <Overlay />
-                    <Update />
                     <ProtocolWarningDialog />
                     <ErrorToast />
                     <Footer toggleModal={this.toggleModal} closeDrawer={this.props.closeDrawer}/>
@@ -333,7 +330,10 @@ class Main extends React.PureComponent {
                             }
                         >
                             <Box sx={{ flex: 1, overflow: 'auto', p: 2.5 }}>
-                                <BrowserIntegration />
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                    Proxy Checker Local keeps its data in the data folder beside the portable executable.
+                                    Browser extension integration and automatic updates are disabled in this build.
+                                </Typography>
                             </Box>
                         </SideDrawer>
                     )}

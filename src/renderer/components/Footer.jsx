@@ -9,12 +9,9 @@ import { psUrl } from '../misc/other';
 import GitIcon from '../components/ui/GitIcon';
 import DocIcon from '../components/ui/DocIcon';
 import LicenseIcon from '../components/ui/LicenseIcon';
-import SupportIcon from '../components/ui/SupportIcon';
 import WhiteLogo from "../../../public/icons/Logo-ProxyScrape-white.png";
 import { FOOTER_BACKGROUND, blueBrand } from '../theme/palette';
-import { openIntercom } from '../misc/intercom';
 
-const isElectron = typeof window !== 'undefined' && !!window.__ELECTRON__;
 import CanaryBanner from './CanaryBanner';
 import GuestModeBannerFooter from './GuestModeBannerFooter';
 import { IS_CANARY } from '@shared/AppConstants';
@@ -63,12 +60,6 @@ const Footer = ({ toggleModal, closeDrawer }) => (
                 <LicenseIcon />
                 <span>License</span>
             </Box>
-            {isElectron && (
-                <Box component="a" href="#" title="Live Support" onClick={(e) => { e.preventDefault(); if (closeDrawer) closeDrawer(); openIntercom(); }} sx={footerLinkSx}>
-                    <SupportIcon />
-                    <span>Support</span>
-                </Box>
-            )}
         </Stack>
         <Box sx={{
             textAlign: 'center',

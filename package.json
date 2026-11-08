@@ -1,6 +1,7 @@
 {
-  "name": "proxyscrape-proxy-checker",
-  "version": "2.4.0",
+  "name": "proxy-checker-local",
+  "productName": "Proxy Checker Local",
+  "version": "2.4.0-local.1",
   "main": "./dist/main/index.js",
   "license": "MIT AND Commons-Clause-1.0",
   "author": {
@@ -28,7 +29,8 @@
     "dev:web": "vite --config vite.web.config.mjs",
     "dev:web:all": "concurrently --names \"go,vite\" --prefix-colors \"cyan,magenta\" \"cd backend && air\" \"vite --config vite.web.config.mjs\"",
     "build": "npm run build:backend && electron-vite build",
-    "build:backend": "bash scripts/build-backend.sh",
+    "build:backend": "node scripts/build-backend-local.mjs",
+    "dist:local": "npm run build && electron-builder --config electron-builder.local.config.cjs --win portable --x64 --publish never",
     "build:webserver": "bash scripts/build-webserver.sh",
     "build:renderer": "electron-vite build --outDir dist",
     "start": "electron-vite preview --outDir dist",
@@ -74,10 +76,7 @@
     "@codemirror/commands": "^6.10.3",
     "@codemirror/state": "^6.6.0",
     "@codemirror/view": "^6.41.1",
-    "@intercom/messenger-js-sdk": "^0.0.19",
     "@mui/icons-material": "^9.0.0",
-    "@posthog/react": "^1.9.0",
-    "framer-motion": "^12.38.0",
-    "posthog-js": "^1.367.0"
+    "framer-motion": "^12.38.0"
   }
 }

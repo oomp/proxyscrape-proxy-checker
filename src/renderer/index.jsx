@@ -11,8 +11,6 @@ import Main from './containers/Main';
 import Login from './containers/Login';
 import { Provider } from 'react-redux';
 import store from './store/index';
-import posthog from 'posthog-js';
-import { PostHogProvider } from '@posthog/react';
 import { trackLifecycle, trackScreen } from './misc/analytics';
 import { initIntercom, shutdownIntercom } from './misc/intercom';
 import { ipcRenderer } from 'electron';
@@ -27,45 +25,6 @@ import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/600.css';
 import '@fontsource/montserrat/700.css';
 import './styles/global.css';
-
-/* global __POSTHOG_KEY__ __POSTHOG_API_HOST__ __POSTHOG_UI_HOST__ */
-
-if (__POSTHOG_KEY__) {
-    posthog.init(__POSTHOG_KEY__, {
-        api_host: __POSTHOG_API_HOST__,
-        ui_host: __POSTHOG_UI_HOST__,
-        defaults: '2026-01-30',
-        person_profiles: 'always',
-        persistence: 'localStorage',
-        // We use manual trackScreen() calls — disable auto pageview capture.
-        // defaults:'2026-01-30' would set this to 'history_change' without this override.
-        capture_pageview: false,
-    });
-
-    const isElectron = typeof window !== 'undefined' && !!window.__ELECTRON__;
-    const isInIframe = window.self !== window.top;
-
-    const superProps = {
-        app_version: version,
-        platform: isElectron ? 'desktop' : 'web',
-        os: window.__ELECTRON__?.platform ?? 'web',
-    };
-
-    // When embedded in an iframe, record the parent page's hostname so events
-    // can be attributed to the embedding site. document.referrer is used because
-    // window.top.location is inaccessible in cross-origin iframes.
-    if (isInIframe) {
-        try {
-            superProps.iframe_host = document.referrer
-                ? new URL(document.referrer).hostname
-                : 'unknown';
-        } catch {
-            superProps.iframe_host = 'unknown';
-        }
-    }
-
-    posthog.register(superProps);
-}
 
 trackLifecycle('opened');
 trackScreen('Core');
@@ -327,10 +286,8 @@ function AppRoot() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-    <PostHogProvider client={posthog}>
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AppRoot />
-        </ThemeProvider>
-    </PostHogProvider>
+    <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AppRoot />
+    </ThemeProvider>
 );

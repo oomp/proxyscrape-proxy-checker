@@ -8,12 +8,8 @@ const _require = createRequire(import.meta.url)
 const pkg = _require('./package.json')
 const IS_CANARY = pkg.version.includes('-canary')
 
-const REQUIRED_ENV = [
-  'POSTHOG_KEY',
-  'POSTHOG_API_HOST',
-  'POSTHOG_UI_HOST',
-  'INTERCOM_APP_ID',
-]
+// Analytics and the upstream support widget are disabled in this local fork.
+const REQUIRED_ENV = []
 
 const isBuild = process.argv.includes('build')
 

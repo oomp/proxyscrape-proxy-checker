@@ -6,7 +6,6 @@ import WhiteLogo from '../../../public/icons/Logo-ProxyScrape-white.png';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { FOOTER_BACKGROUND, CARD_BACKGROUND, blueBrand } from '../theme/palette';
-import { openIntercom } from '../misc/intercom';
 
 const isElectron = typeof window !== 'undefined' && !!window.__ELECTRON__;
 import SideDrawer from './ui/SideDrawer';
@@ -111,25 +110,8 @@ const Info = memo(({ show, releases, toggleInfo }) => {
                     border: `1px solid ${FOOTER_BACKGROUND}`,
                 }}>
                     <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, lineHeight: 1.6 }}>
-                        {isElectron ? (
-                            <>
-                                Need help? Contact us via our{' '}
-                                <Box component="a" href="#" onClick={(e) => { e.preventDefault(); toggleInfo(); openIntercom(); }} sx={linkSx}>
-                                    24/7 live chat
-                                </Box>
-                                {' '}or via{' '}
-                                <Box component="a" href={psUrl('/contact', 'support')} onClick={openPsLink} sx={linkSx}>
-                                    email
-                                </Box>
-                            </>
-                        ) : (
-                            <>
-                                Need help? Contact us via our 24/7 live chat or via{' '}
-                                <Box component="a" href={psUrl('/contact', 'support')} onClick={openPsLink} sx={linkSx}>
-                                    email
-                                </Box>
-                            </>
-                        )}
+                        Proxy Checker Local is an independent build of ProxyScrape Proxy Checker.
+                        Analytics, live chat and automatic updates are disabled.
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, lineHeight: 1.6 }}>
                         We are happy to help you with all your proxy needs!

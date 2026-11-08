@@ -5,8 +5,9 @@
 // Protocol: 4-byte little-endian uint32 length prefix, followed by UTF-8 JSON body.
 //
 // Supported actions:
-//   ping  → {"status":"ok","version":"...","appRunning":bool,"appInstalled":bool}
-//   check → writes proxies to a temp file for the Electron app to pick up; returns {"ok":true}
+//
+//	ping  → {"status":"ok","version":"...","appRunning":bool,"appInstalled":bool}
+//	check → writes proxies to a temp file for the Electron app to pick up; returns {"ok":true}
 package main
 
 import (
@@ -76,7 +77,7 @@ func main() {
 		}
 		payload := checkPayload{Proxies: req.Proxies, Source: req.Source}
 		data, _ := json.Marshal(payload)
-		checkFile := filepath.Join(os.TempDir(), "proxychecker-check.json")
+		checkFile := filepath.Join(os.TempDir(), "proxychecker-local-check.json")
 		_ = os.WriteFile(checkFile, data, 0600)
 		ok, _ := json.Marshal(map[string]bool{"ok": true})
 		_ = writeMessage(os.Stdout, ok)
@@ -123,11 +124,11 @@ func isPackagedInstall() bool {
 }
 
 // isAppRunning checks whether the main Proxy Checker Electron process is alive.
-// The Electron main process writes os.TempDir()/proxychecker.pid on startup
+// The Electron main process writes os.TempDir()/proxychecker-local.pid on startup
 // and removes it on exit. We read that PID and test liveness without sending
 // a real signal (signal 0 on unix, GetExitCodeProcess on windows).
 func isAppRunning() bool {
-	pidFile := filepath.Join(os.TempDir(), "proxychecker.pid")
+	pidFile := filepath.Join(os.TempDir(), "proxychecker-local.pid")
 	data, err := os.ReadFile(pidFile)
 	if err != nil {
 		return false
