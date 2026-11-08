@@ -212,6 +212,11 @@ async function main() {
         assert.equal(items.length, 2);
         assert.equal(items.filter(x => x.status === 'working' && x.protocols.includes('socks5')).length, 1);
         assert.equal(items.filter(x => x.status === 'failed').length, 1);
+        await until(() => renderer.eval(`(() => {
+            const stop = [...document.querySelectorAll('button')].find(x => x.textContent === 'Stop');
+            return stop && getComputedStyle(stop.parentElement.parentElement).opacity === '0';
+        })()`), 'checking overlay finished');
+        await renderer.eval('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))');
         pass('End-to-end check distinguishes working and closed loopback SOCKS5 endpoints');
         const screenshot = await renderer.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(root, 'verified-app.png'), Buffer.from(screenshot.data, 'base64'));
